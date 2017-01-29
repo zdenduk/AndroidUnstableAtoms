@@ -5,12 +5,10 @@ import com.example.semanticer.unstable.domain.model.GameField;
 import com.example.semanticer.unstable.domain.model.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by semanticer on 15.01.2017.
+ * Created by semanticer on 15.01.20017.
  */
 
 public class GameImpl implements Game {
@@ -23,12 +21,8 @@ public class GameImpl implements Game {
     }
 
     private GameImpl(int rowCount, int columnCount) {
-
-        List<List<GameField>> fields = new ArrayList<>();
-
-        // TODO fill up fields with empty GameFields
-
-        gameBoard = getSampleBoard(); // TODO replace with GameBoard.create(fields);
+        List<List<GameField>> fields = getClearBoard(rowCount, columnCount);
+        gameBoard = GameBoard.create(fields);
         playerOnTurn = Player.FIRST_PLAYER;
     }
 
@@ -42,16 +36,41 @@ public class GameImpl implements Game {
         if (!isMovePossible(x, y)) {
             throw new IllegalStateException("Impossible to make move to position x: " + x + " y: " + y);
         }
-        // TODO return new GameBoard after this move
-
         switchPlayerOnTurn();
-        return  getSampleBoard(); // TODO replace with new and CORRECT GameBoard
+        GameBoard newBoard = alterGameBoard(x, y);
+        return newBoard;
+    }
+
+
+    private GameBoard alterGameBoard(int x, int y) {
+
+        if (gameBoard.fields().get(x).get(y).atomCount() < 3) {
+            gameBoard.fields().get(x).set(y, GameField.create(gameBoard.fields().get(x).get(y).atomCount() + 1, playerOnTurn));
+        } else {
+            gameBoard.fields().get(x).set(y, GameField.createBlank());
+            spreadFrom(x, y);
+        }
+        return gameBoard;
+    }
+
+    private void spreadFrom(int x, int y) {
+        if (x > 0) {
+            alterGameBoard(x - 1, y);
+        }
+        if (x < gameBoard.rows() - 1) {
+            alterGameBoard(x + 1, y);
+        }
+        if (y > 0) {
+            alterGameBoard(x, y - 1);
+        }
+        if (y < gameBoard.columns() - 1) {
+            alterGameBoard(x, y + 1);
+        }
     }
 
     @Override
     public boolean isMovePossible(int x, int y) {
-        // TODO return if
-        return true;
+        return gameBoard.fields().get(x).get(y).player() != playerOnTurn || gameBoard.fields().get(x).get(y).player() == Player.ANON;
     }
 
     @Override
@@ -59,22 +78,14 @@ public class GameImpl implements Game {
         return gameBoard;
     }
 
-
-    // TODO remove this example method
-    public GameBoard getSampleBoard() {
-        List<List<GameField>> fields =
-            Arrays.asList(
-                    Arrays.asList(GameField.createBlank(), GameField.createBlank(), GameField.create(3, Player.SECOND_PLAYER), GameField.createBlank()),
-                    Arrays.asList(GameField.create(2, Player.FIRST_PLAYER), GameField.createBlank(), GameField.create(1, Player.SECOND_PLAYER), GameField.createBlank()),
-                    Arrays.asList(GameField.create(3, Player.FIRST_PLAYER), GameField.createBlank(), GameField.createBlank(), GameField.create(1, Player.FIRST_PLAYER)),
-                    Arrays.asList(GameField.create(1, Player.SECOND_PLAYER), GameField.create(1, Player.SECOND_PLAYER), GameField.create(3, Player.SECOND_PLAYER), GameField.createBlank()),
-                    Arrays.asList(GameField.createBlank(), GameField.createBlank(), GameField.createBlank(), GameField.create(2, Player.SECOND_PLAYER)),
-                    Arrays.asList(GameField.createBlank(), GameField.createBlank(), GameField.create(1, Player.SECOND_PLAYER), GameField.createBlank())
-            );
-
-        for (List<GameField> row : fields) {
-            Collections.shuffle(row);
+    public List<List<GameField>> getClearBoard(int x, int y) {
+        List<List<GameField>> list = new ArrayList<>();
+        for (int i = 0; i < x; i++) {
+            list.add(i, new ArrayList<>());
+            for (int j = 0; j < y; j++) {
+                list.get(i).add(j, GameField.createBlank());
+            }
         }
-        return GameBoard.create(fields);
+        return list;
     }
 }
