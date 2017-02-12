@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by semanticer on 15.01.20017.
+ * Created by semanticer & zdeněk on 15.01.20017.
  */
 
 public class GameImpl implements Game {
@@ -37,8 +37,7 @@ public class GameImpl implements Game {
             throw new IllegalStateException("Impossible to make move to position x: " + x + " y: " + y);
         }
         switchPlayerOnTurn();
-        GameBoard newBoard = alterGameBoard(x, y);
-        return newBoard;
+        return alterGameBoard(x, y);
     }
 
 
@@ -76,6 +75,29 @@ public class GameImpl implements Game {
     @Override
     public GameBoard getBoard() {
         return gameBoard;
+    }
+
+    @Override
+    public int getScore(GameBoard board, Player player) {
+        int counter = 0;
+        for (List<GameField> cols : board.fields()) {
+            for (GameField rows : cols) {
+                if (rows.player() == player) {
+                    counter += rows.atomCount();
+                }
+            }
+        }
+        return counter;
+    }
+
+    @Override
+    public boolean isntOver() { //checks if neither player has 0 atoms and if other has atleast one (because of start of the game)
+        return !((getScore(gameBoard, Player.FIRST_PLAYER) == 0 && getScore(gameBoard, Player.SECOND_PLAYER) > 1) || (getScore(gameBoard, Player.SECOND_PLAYER) == 0 && getScore(gameBoard, Player.FIRST_PLAYER) > 1));
+    }
+
+    @Override
+    public Player getPlayer() {
+        return playerOnTurn;
     }
 
     public List<List<GameField>> getClearBoard(int x, int y) {
