@@ -21,7 +21,7 @@ public class MainPresenter extends RxPresenter<MainView> {
         super.onCreate(savedState);
         game = GameImpl.createNew(6, 4);
         view().subscribe(view -> view.showGameBoard(game.getBoard()));
-        view().subscribe(view -> view.showCurrentPlayer(game.getPlayer()));
+        view().subscribe(view -> view.showCurrentPlayer(Player.FIRST_PLAYER));
         view().subscribe(view -> view.showScore(Player.FIRST_PLAYER, Player.SECOND_PLAYER, game));
     }
 
@@ -29,7 +29,7 @@ public class MainPresenter extends RxPresenter<MainView> {
         if (game.isntOver()) {
             GameBoard newGameBoard = game.onMoveMade(x, y);
             view().subscribe(view -> view.showGameBoard(newGameBoard));
-            view().subscribe(view -> view.showCurrentPlayer(Player.FIRST_PLAYER));
+            view().subscribe(view -> view.showCurrentPlayer(game.getPlayer()));
             view().subscribe(view -> view.showScore(Player.FIRST_PLAYER, Player.SECOND_PLAYER, game));
             if (!game.isntOver()) {
                 view().subscribe(view -> view.showWinner(game.getScore(game.getBoard(), Player.FIRST_PLAYER) > 0 ? Player.FIRST_PLAYER : Player.SECOND_PLAYER));
