@@ -32,14 +32,15 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public GameBoard onMoveMade(int x, int y) {
-        if (!isMovePossible(x, y)) {
-            throw new IllegalStateException("Impossible to make move to position x: " + x + " y: " + y);
-        }
-        switchPlayerOnTurn();
-        return alterGameBoard(x, y);
+    public GameBoard onMoveMade(int x, int y, boolean type) {
+        return isMovePossible(x, y) ? (type ? playerTurn(x, y) : gameBoard) : gameBoard;
     }
 
+    private GameBoard playerTurn(int x, int y) {
+        GameBoard newGame = alterGameBoard(x, y);
+        switchPlayerOnTurn();
+        return newGame;
+    }
 
     private GameBoard alterGameBoard(int x, int y) {
 
@@ -69,7 +70,7 @@ public class GameImpl implements Game {
 
     @Override
     public boolean isMovePossible(int x, int y) {
-        return gameBoard.fields().get(x).get(y).player() != playerOnTurn || gameBoard.fields().get(x).get(y).player() == Player.ANON;
+        return gameBoard.fields().get(x).get(y).player() == playerOnTurn || gameBoard.fields().get(x).get(y).player() == Player.ANON;
     }
 
     @Override

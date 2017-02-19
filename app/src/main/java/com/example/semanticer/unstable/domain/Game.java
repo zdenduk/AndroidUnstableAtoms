@@ -8,7 +8,7 @@ import com.example.semanticer.unstable.domain.model.Player;
  */
 
 public interface Game {
-    GameBoard onMoveMade(int x, int y);
+    GameBoard onMoveMade(int x, int y, boolean type);
     boolean isMovePossible(int x, int y);
     GameBoard getBoard();
     int getScore(GameBoard board, Player player);
