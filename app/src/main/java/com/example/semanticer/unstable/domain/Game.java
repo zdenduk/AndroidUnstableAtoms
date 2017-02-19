@@ -14,4 +14,5 @@ public interface Game {
     int getScore(GameBoard board, Player player);
     boolean isntOver();
     Player getPlayer();
+    GameBoard alterGameBoard(int x, int y);
 }

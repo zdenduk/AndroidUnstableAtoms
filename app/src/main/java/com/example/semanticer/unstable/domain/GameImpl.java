@@ -1,5 +1,6 @@
 package com.example.semanticer.unstable.domain;
 
+import com.example.semanticer.unstable.domain.gameAI.Ai;
 import com.example.semanticer.unstable.domain.model.GameBoard;
 import com.example.semanticer.unstable.domain.model.GameField;
 import com.example.semanticer.unstable.domain.model.Player;
@@ -33,7 +34,7 @@ public class GameImpl implements Game {
 
     @Override
     public GameBoard onMoveMade(int x, int y, boolean type) {
-        return isMovePossible(x, y) ? (type ? playerTurn(x, y) : gameBoard) : gameBoard;
+        return isMovePossible(x, y) ? (type ? playerTurn(x, y) : aiTurn(x, y)) : gameBoard;
     }
 
     private GameBoard playerTurn(int x, int y) {
@@ -42,7 +43,16 @@ public class GameImpl implements Game {
         return newGame;
     }
 
-    private GameBoard alterGameBoard(int x, int y) {
+    private GameBoard aiTurn(int x, int y) {
+        gameBoard = alterGameBoard(x, y);
+        switchPlayerOnTurn();
+        gameBoard = Ai.makeTurn(this);
+        switchPlayerOnTurn();
+        return gameBoard;
+    }
+
+    @Override
+    public GameBoard alterGameBoard(int x, int y) {
 
         if (gameBoard.fields().get(x).get(y).atomCount() < 3) {
             gameBoard.fields().get(x).set(y, GameField.create(gameBoard.fields().get(x).get(y).atomCount() + 1, playerOnTurn));
