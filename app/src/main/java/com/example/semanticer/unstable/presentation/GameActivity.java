@@ -11,6 +11,9 @@ import com.example.semanticer.unstable.domain.Game;
 import com.example.semanticer.unstable.domain.model.GameBoard;
 import com.example.semanticer.unstable.domain.model.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import nucleus.factory.RequiresPresenter;
@@ -28,15 +31,10 @@ public class GameActivity extends NucleusActivity<GamePresenter> implements Game
     @BindView(R.id.score2)
     TextView player2score;
 
-    @BindView(R.id.winner)
-    TextView winner;
-
     @BindView(R.id.currentPlayer)
     TextView currentPlayer;
 
-    @BindView(R.id.playAgain)
-    TextView playAgainField;
-
+    private static List<String> data = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,19 +57,8 @@ public class GameActivity extends NucleusActivity<GamePresenter> implements Game
     }
 
     @Override
-    public void showWinner(Player player) {
-        winner.setText(player == Player.FIRST_PLAYER ? "player1 win" : "player2 win");
-        playAgainField.setText("Play again");
-    }
-
-    @Override
     public void showCurrentPlayer(Player player) {
         currentPlayer.setText(player == Player.FIRST_PLAYER ? "Player1" : "Player2");
-    }
-
-    @Override
-    public void hideWinnerText() {
-        winner.setText("");
     }
 
     @Override
@@ -80,8 +67,20 @@ public class GameActivity extends NucleusActivity<GamePresenter> implements Game
     }
 
     @Override
-    public void playAgain(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
+    public void goToFinal(boolean winner) {
+        Intent intent = new Intent(this, FinalActivity.class);
+        intent.putExtra("playerWon", winner);
         startActivity(intent);
     }
+
+    @Override
+    public void updateData(Player first, Player second, Game game) {
+        data.add("Player 1 score: " + game.getScore(game.getBoard(), first));
+        data.add("Player 2 score: " + game.getScore(game.getBoard(), second));
+    }
+
+    public static List<String> getData() {
+        return data;
+    }
+
 }

@@ -25,7 +25,6 @@ public class GamePresenter extends RxPresenter<GameView> {
                 view.showGameBoard(game.getBoard());
                 view.showCurrentPlayer(Player.FIRST_PLAYER);
                 view.showScore(Player.FIRST_PLAYER, Player.SECOND_PLAYER, game);
-                view.hideWinnerText();
             }
         });
     }
@@ -39,12 +38,13 @@ public class GamePresenter extends RxPresenter<GameView> {
                         view.showGameBoard(newGameBoard);
                         view.showCurrentPlayer(game.getPlayer());
                         view.showScore(Player.FIRST_PLAYER, Player.SECOND_PLAYER, game);
+                        view.updateData(Player.FIRST_PLAYER, Player.SECOND_PLAYER, game);
                     }
                 });
                 if (!game.isntOver()) {
                     view().subscribe(view -> {
                         if (view != null) {
-                            view.showWinner(game.getScore(game.getBoard(), Player.FIRST_PLAYER) > 0 ? Player.FIRST_PLAYER : Player.SECOND_PLAYER);
+                            view.goToFinal(game.getScore(game.getBoard(), Player.FIRST_PLAYER) > 0 ? true : false);
                         }
                     });
                 }
