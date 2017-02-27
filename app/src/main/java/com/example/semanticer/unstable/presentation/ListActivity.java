@@ -12,7 +12,7 @@ import com.example.semanticer.unstable.domain.Game;
 
 import java.util.List;
 
-public class ListActivity extends Activity{
+public class ListActivity extends Activity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -32,7 +32,8 @@ public class ListActivity extends Activity{
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new Adapter(GameActivity.getData());
+        Intent intent = getIntent();
+        mAdapter = new Adapter(intent.getStringArrayListExtra("data"));
         mRecyclerView.setAdapter(mAdapter);
     }
 

@@ -21,8 +21,6 @@ public interface GameView {
 
     void warn(String message);
 
-    void goToFinal(boolean param);
-
-    void updateData(Player i, Player k, Game x);
+    void goToFinal(boolean param, List<String> data);
 
 }

@@ -7,6 +7,9 @@ import com.example.semanticer.unstable.domain.GameImpl;
 import com.example.semanticer.unstable.domain.model.GameBoard;
 import com.example.semanticer.unstable.domain.model.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nucleus.presenter.RxPresenter;
 
 /**
@@ -38,13 +41,13 @@ public class GamePresenter extends RxPresenter<GameView> {
                         view.showGameBoard(newGameBoard);
                         view.showCurrentPlayer(game.getPlayer());
                         view.showScore(Player.FIRST_PLAYER, Player.SECOND_PLAYER, game);
-                        view.updateData(Player.FIRST_PLAYER, Player.SECOND_PLAYER, game);
                     }
                 });
                 if (!game.isntOver()) {
                     view().subscribe(view -> {
                         if (view != null) {
-                            view.goToFinal(game.getScore(game.getBoard(), Player.FIRST_PLAYER) > 0 ? true : false);
+                            System.out.println(game.getData().size() > 0 ? "KRVA" : "ZOLO");
+                            view.goToFinal(game.getScore(game.getBoard(), Player.FIRST_PLAYER) > 0, game.getData());
                         }
                     });
                 }

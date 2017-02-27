@@ -50,6 +50,7 @@ public class FinalActivity extends NucleusActivity<FinalPresenter> implements Fi
     @Override
     public void showDetails(View view) {
         Intent intent = new Intent(this, ListActivity.class);
+        intent.putStringArrayListExtra("data",getIntent().getStringArrayListExtra("data"));
         startActivity(intent);
     }
 

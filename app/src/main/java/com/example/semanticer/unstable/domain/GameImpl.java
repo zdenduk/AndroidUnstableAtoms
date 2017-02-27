@@ -16,6 +16,7 @@ public class GameImpl implements Game {
 
     private GameBoard gameBoard;
     private Player playerOnTurn;
+    private List<String> data;
 
     public static GameImpl createNew(int rowCount, int columnCount) {
         return new GameImpl(rowCount, columnCount);
@@ -24,6 +25,7 @@ public class GameImpl implements Game {
     private GameImpl(int rowCount, int columnCount) {
         List<List<GameField>> fields = getClearBoard(rowCount, columnCount);
         gameBoard = GameBoard.create(fields);
+        data = new ArrayList<String>();
         playerOnTurn = Player.FIRST_PLAYER;
     }
 
@@ -34,6 +36,7 @@ public class GameImpl implements Game {
 
     @Override
     public GameBoard onMoveMade(int x, int y, boolean type) {
+        data.add("Player 1 score: " + getScore(gameBoard, Player.FIRST_PLAYER) + " | Player 2 score: " + getScore(gameBoard, Player.SECOND_PLAYER));
         return isMovePossible(x, y) ? (type ? playerTurn(x, y) : aiTurn(x, y)) : gameBoard;
     }
 
@@ -121,4 +124,10 @@ public class GameImpl implements Game {
         }
         return list;
     }
+
+    @Override
+    public List<String> getData() {
+        return data;
+    }
+
 }

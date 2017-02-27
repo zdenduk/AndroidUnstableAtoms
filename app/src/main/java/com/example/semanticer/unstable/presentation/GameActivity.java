@@ -34,8 +34,6 @@ public class GameActivity extends NucleusActivity<GamePresenter> implements Game
     @BindView(R.id.currentPlayer)
     TextView currentPlayer;
 
-    private static List<String> data = new ArrayList<String>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,20 +65,11 @@ public class GameActivity extends NucleusActivity<GamePresenter> implements Game
     }
 
     @Override
-    public void goToFinal(boolean winner) {
+    public void goToFinal(boolean winner, List<String> data) {
         Intent intent = new Intent(this, FinalActivity.class);
         intent.putExtra("playerWon", winner);
+        intent.putStringArrayListExtra("data", (ArrayList<String>) data);
         startActivity(intent);
-    }
-
-    @Override
-    public void updateData(Player first, Player second, Game game) {
-        data.add("Player 1 score: " + game.getScore(game.getBoard(), first));
-        data.add("Player 2 score: " + game.getScore(game.getBoard(), second));
-    }
-
-    public static List<String> getData() {
-        return data;
     }
 
 }

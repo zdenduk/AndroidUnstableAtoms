@@ -17,4 +17,5 @@ public interface Game {
     boolean isntOver();
     Player getPlayer();
     GameBoard alterGameBoard(int x, int y);
+    List<String> getData();
 }
