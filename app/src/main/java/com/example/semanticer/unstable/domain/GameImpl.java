@@ -1,5 +1,7 @@
 package com.example.semanticer.unstable.domain;
 
+import android.support.annotation.NonNull;
+
 import com.example.semanticer.unstable.domain.gameAI.Ai;
 import com.example.semanticer.unstable.domain.model.GameBoard;
 import com.example.semanticer.unstable.domain.model.GameField;
@@ -38,8 +40,22 @@ public class GameImpl implements Game {
     @Override
     public GameBoard onMoveMade(int x, int y, boolean type) {
         scores.add("Player 1 score: " + getScore(gameBoard, Player.FIRST_PLAYER) + " | Player 2 score: " + getScore(gameBoard, Player.SECOND_PLAYER));
-        gameBoards.add(gameBoard);
+        List<List<GameField>> tmp = copyFields();
+        gameBoards.add(GameBoard.create(tmp));
         return isMovePossible(x, y) ? (type ? playerTurn(x, y) : aiTurn(x, y)) : gameBoard;
+    }
+
+    @NonNull
+    private List<List<GameField>> copyFields() {
+        List<List<GameField>> tmp = new ArrayList<>(gameBoard.fields().size());
+        for (List<GameField> i : gameBoard.fields()) {
+            List<GameField> tmp2 = new ArrayList<>(i.size());
+            for (GameField j : i) {
+                tmp2.add(GameField.create(j.atomCount(), j.player()));
+            }
+            tmp.add(tmp2);
+        }
+        return tmp;
     }
 
     private GameBoard playerTurn(int x, int y) {

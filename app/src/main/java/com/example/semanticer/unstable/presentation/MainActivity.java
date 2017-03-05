@@ -42,9 +42,6 @@ public class MainActivity extends NucleusActivity<MainPresenter> implements Main
         startGame(true);
     }
 
-    /*
-    https://developer.android.com/training/basics/firstapp/starting-activity.html
-    */
     private void startGame(boolean gameType) {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("Type", gameType);

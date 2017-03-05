@@ -3,7 +3,6 @@ package com.example.semanticer.unstable.presentation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,7 +69,7 @@ public class GameActivity extends NucleusActivity<GamePresenter> implements Game
         Intent intent = new Intent(this, FinalActivity.class);
         intent.putExtra("playerWon", winner);
         intent.putStringArrayListExtra("scores", (ArrayList<String>) scores);
-        intent.putParcelableArrayListExtra("gameboards",(ArrayList<? extends Parcelable>) gameBoards);
+        intent.putParcelableArrayListExtra("gameboards", (ArrayList<? extends Parcelable>) gameBoards);
         startActivity(intent);
     }
 

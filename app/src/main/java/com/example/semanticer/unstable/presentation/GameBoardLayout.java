@@ -57,7 +57,7 @@ public class GameBoardLayout extends GridLayout {
         setupFieldListeners(listener);
     }
 
-    private void setupFieldListeners(OnMoveListener listener) {
+    public void setupFieldListeners(OnMoveListener listener) {
         for (int i = 0; i < getChildCount(); i++) {
             BoardFieldWidget child = (BoardFieldWidget) getChildAt(i);
             GridLayout.LayoutParams lp = (LayoutParams) child.getLayoutParams();
