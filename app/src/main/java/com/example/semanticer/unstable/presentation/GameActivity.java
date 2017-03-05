@@ -41,9 +41,6 @@ public class GameActivity extends NucleusActivity<GamePresenter> implements Game
         setContentView(R.layout.activity_game);
         ButterKnife.bind(this);
         boolean gameType = getIntent().getBooleanExtra("Type", false);
-        if(gameBoardLayout == null){
-            System.out.println("píča");
-        }
         gameBoardLayout.setOnMoveListener((x, y) -> getPresenter().onMoveMade(x, y, gameType));
     }
 

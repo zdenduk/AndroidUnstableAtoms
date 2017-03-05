@@ -1,5 +1,7 @@
 package com.example.semanticer.unstable.domain.model;
 
+import android.os.Parcelable;
+
 import com.google.auto.value.AutoValue;
 
 /**
@@ -7,7 +9,7 @@ import com.google.auto.value.AutoValue;
  */
 
 @AutoValue
-abstract public class GameField {
+abstract public class GameField implements Parcelable{
 
     public static final int MAXIMUM_STABLE_ATOM_COUNT = 3;
 

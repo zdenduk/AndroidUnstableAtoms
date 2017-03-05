@@ -11,9 +11,13 @@ import com.example.semanticer.unstable.domain.model.GameBoard;
 
 import java.util.List;
 
+import rx.subjects.PublishSubject;
+
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private List<String> scores;
     private List<GameBoard> gameBoards;
+
+    private OnClickListener listener = null;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -53,13 +57,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.score.setText(scores.get(position));
-        holder.turnNumber.setText(position+". kolo");
+        holder.turnNumber.setText(position + ". kolo");
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.OnClickListener(position);
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return scores.size();
+    }
+
+    public void setOnClickListener(OnClickListener listener) {
+        this.listener = listener;
     }
 }
 

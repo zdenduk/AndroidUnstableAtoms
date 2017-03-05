@@ -43,19 +43,17 @@ public class ListActivity extends Activity {
         // specify an adapter (see also next example)
         Intent intent = getIntent();
         mAdapter = new Adapter(intent.getStringArrayListExtra("scores"), intent.getParcelableArrayListExtra("gameboards"));
+
+        List<GameBoard> gameBoards = intent.getParcelableArrayListExtra("gameboards");
+        mAdapter.setOnClickListener(position -> {
+            gameBoardList.setBoard(gameBoards.get(position));
+        });
+
         mRecyclerView.setAdapter(mAdapter);
 
         // TODO setup game
 
-        List<GameBoard> gameBoards = intent.getParcelableArrayListExtra("gameboards");
-        game = GameImpl.createNew(gameBoards.get(0).columns(), gameBoards.get(0).rows());
-        gameBoardList.setBoard(game.getBoard());
-
         // TODO click listener
-    }
-
-    public void showGameBoard(GameBoard gameBoard) {
-        gameBoardList.setBoard(gameBoard);
     }
 
     public void playAgain(View view) {
