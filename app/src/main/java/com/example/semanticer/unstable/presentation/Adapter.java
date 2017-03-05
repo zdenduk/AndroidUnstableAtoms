@@ -7,28 +7,33 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.semanticer.unstable.R;
+import com.example.semanticer.unstable.domain.model.GameBoard;
 
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-    private List<String> mDataset;
+    private List<String> scores;
+    private List<GameBoard> gameBoards;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mTextView;
+        public TextView score;
+        public TextView turnNumber;
 
         public ViewHolder(View v) {
             super(v);
-            mTextView = (TextView) itemView.findViewById(R.id.text);
+            score = (TextView) itemView.findViewById(R.id.text);
+            turnNumber = (TextView) itemView.findViewById(R.id.turnNum);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public Adapter(List<String> myDataset) {
-        mDataset = myDataset;
+    public Adapter(List<String> scoreData, List<GameBoard> gameBoardData) {
+        scores = scoreData;
+        gameBoards = gameBoardData;
     }
 
     // Create new views (invoked by the layout manager)
@@ -47,14 +52,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset.get(position));
-
+        holder.score.setText(scores.get(position));
+        holder.turnNumber.setText(position+". kolo");
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return scores.size();
     }
 }
 

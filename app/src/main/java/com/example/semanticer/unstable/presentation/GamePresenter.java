@@ -15,6 +15,7 @@ import nucleus.presenter.RxPresenter;
 /**
  * Created by semanticer on 15.01.2017.
  */
+
 public class GamePresenter extends RxPresenter<GameView> {
 
     private Game game;
@@ -46,8 +47,7 @@ public class GamePresenter extends RxPresenter<GameView> {
                 if (!game.isntOver()) {
                     view().subscribe(view -> {
                         if (view != null) {
-                            System.out.println(game.getData().size() > 0 ? "KRVA" : "ZOLO");
-                            view.goToFinal(game.getScore(game.getBoard(), Player.FIRST_PLAYER) > 0, game.getData());
+                            view.goToFinal(game.getScore(game.getBoard(), Player.FIRST_PLAYER) > 0, game.getScores(), game.getGameBoards());
                         }
                     });
                 }

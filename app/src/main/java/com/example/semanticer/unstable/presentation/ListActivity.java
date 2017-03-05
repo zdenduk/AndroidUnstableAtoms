@@ -9,13 +9,22 @@ import android.view.View;
 
 import com.example.semanticer.unstable.R;
 import com.example.semanticer.unstable.domain.Game;
+import com.example.semanticer.unstable.domain.GameImpl;
+import com.example.semanticer.unstable.domain.model.GameBoard;
 
 import java.util.List;
+
+import butterknife.BindView;
 
 public class ListActivity extends Activity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private Game game;
+
+    @BindView(R.id.game_board_layout_list)
+    GameBoardLayout gameBoardList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +42,20 @@ public class ListActivity extends Activity {
 
         // specify an adapter (see also next example)
         Intent intent = getIntent();
-        mAdapter = new Adapter(intent.getStringArrayListExtra("data"));
+        mAdapter = new Adapter(intent.getStringArrayListExtra("scores"), intent.getParcelableArrayListExtra("gameboards"));
         mRecyclerView.setAdapter(mAdapter);
+
+        // TODO setup game
+
+        List<GameBoard> gameBoards = intent.getParcelableArrayListExtra("gameboards");
+        game = GameImpl.createNew(gameBoards.get(0).columns(), gameBoards.get(0).rows());
+        gameBoardList.setBoard(game.getBoard());
+
+        // TODO click listener
+    }
+
+    public void showGameBoard(GameBoard gameBoard) {
+        gameBoardList.setBoard(gameBoard);
     }
 
     public void playAgain(View view) {

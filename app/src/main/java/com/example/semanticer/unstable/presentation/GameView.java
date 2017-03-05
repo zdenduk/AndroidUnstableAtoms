@@ -21,6 +21,6 @@ public interface GameView {
 
     void warn(String message);
 
-    void goToFinal(boolean param, List<String> data);
+    void goToFinal(boolean param, List<String> scores, List<GameBoard> gameBoards);
 
 }

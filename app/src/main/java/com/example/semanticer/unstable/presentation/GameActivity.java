@@ -2,6 +2,7 @@ package com.example.semanticer.unstable.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,9 @@ public class GameActivity extends NucleusActivity<GamePresenter> implements Game
         setContentView(R.layout.activity_game);
         ButterKnife.bind(this);
         boolean gameType = getIntent().getBooleanExtra("Type", false);
+        if(gameBoardLayout == null){
+            System.out.println("píča");
+        }
         gameBoardLayout.setOnMoveListener((x, y) -> getPresenter().onMoveMade(x, y, gameType));
     }
 
@@ -65,10 +69,11 @@ public class GameActivity extends NucleusActivity<GamePresenter> implements Game
     }
 
     @Override
-    public void goToFinal(boolean winner, List<String> data) {
+    public void goToFinal(boolean winner, List<String> scores, List<GameBoard> gameBoards) {
         Intent intent = new Intent(this, FinalActivity.class);
         intent.putExtra("playerWon", winner);
-        intent.putStringArrayListExtra("data", (ArrayList<String>) data);
+        intent.putStringArrayListExtra("scores", (ArrayList<String>) scores);
+        intent.putParcelableArrayListExtra("gameboards",(ArrayList<? extends Parcelable>) gameBoards);
         startActivity(intent);
     }
 
